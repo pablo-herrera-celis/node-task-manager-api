@@ -20,6 +20,7 @@ router.post('/tasks', auth, async (req, res) => {
 //GET /tasks?completed=false
 //GET /tasks?limit=10&skip=0
 //GET /tasks?sortBy=createdAt:desc
+//sortBy = [description/completed/createdAt/updatedAt]
 router.get('/tasks', auth, async (req, res) => {
     const match = {}
     const sort = {}
@@ -42,9 +43,9 @@ router.get('/tasks', auth, async (req, res) => {
                 sort
             }
         })
-        res.status(200).send(req.user.tasks)
+        res.send(req.user.tasks)
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send()
     }
 })
 
@@ -57,7 +58,7 @@ router.get('/tasks/:id', auth, async (req, res) => {
         }
         res.send(task)
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send()
     }
 })
 
@@ -77,9 +78,9 @@ router.patch('/tasks/:id', auth, async (req, res) => {
 
         updates.forEach((update) => task[update] = req.body[update])
         await task.save()
-        res.status(200).send(task)
+        res.send(task)
     } catch (e) {
-        res.status(500).send(e)
+        res.status(400).send()
     }
 })
 
